@@ -1,14 +1,12 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 
 public class ToDoListGUI extends JFrame {
-    private TaskManager taskManager;
-    private DefaultListModel<Task> taskListModel;
-    private JList<Task> taskList;
-    private JTextField taskInput;
-    private JButton addButton, removeButton, completeButton;
+    private final TaskManager taskManager;
+    private final DefaultListModel<Task> taskListModel;
+    private final JList<Task> taskList;
+    private final JTextField taskInput;
 
     public ToDoListGUI() {
         taskManager = new TaskManager();
@@ -25,9 +23,9 @@ public class ToDoListGUI extends JFrame {
 
         taskInput = new JTextField(20);
 
-        addButton = new JButton("Adicionar Tarefa");
-        removeButton = new JButton("Remover Tarefa");
-        completeButton = new JButton("Completar Tarefa");
+        JButton addButton = new JButton("Adicionar Tarefa");
+        JButton removeButton = new JButton("Remover Tarefa");
+        JButton completeButton = new JButton("Completar Tarefa");
 
         //Painel de entrada de tarefa
         JPanel inputPanel = new JPanel(new FlowLayout());
@@ -49,34 +47,19 @@ public class ToDoListGUI extends JFrame {
         add(buttonPanel, BorderLayout.SOUTH);
 
         //Adicionando listeners aos botões
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                addTask();
-            }
-        });
+        addButton.addActionListener(_ -> addTask());
 
-        removeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                removeTask();
-            }
-        });
+        removeButton.addActionListener(_ -> removeTask());
 
-        completeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                completeTask();
-            }
-        });
+        completeButton.addActionListener(_ -> completeTask());
     }
 
 
     private void addTask() {
         String description = taskInput.getText();
         if (!description.isEmpty()) {
-            taskManager.addTask(description); // Adiciona ao TaskManager
-            taskListModel.addElement(taskManager.getTask(taskManager.getTaskCount() - 1)); // Atualiza a lista visual
+            taskManager.addTask(description);
+            taskListModel.addElement(taskManager.getTask(taskManager.getTaskCount() - 1));
             taskInput.setText("");
         } else {
             JOptionPane.showMessageDialog(this, "A descrição da tarefa não pode estar vazia.");
